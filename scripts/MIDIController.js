@@ -6,13 +6,13 @@ function loadMIDIDevices(){
 		console.log("Browser supports MIDI!");
 		navigator.requestMIDIAccess().then(MIDILoadSuccess, MIDILoadFailure); //Promises
 	} else {
-		concole.log("Browser does not support MIDI!");
+		console.error("Browser does not support MIDI!");
 	}
 }
 
 function MIDILoadSuccess(midi) {
 	if(midi.inputs.size < 1){
-		console.log("No MIDI input devices found!");
+		console.error("No MIDI input devices found!");
 		return;
 	}
 	
@@ -20,7 +20,7 @@ function MIDILoadSuccess(midi) {
 	var inputs = midi.inputs.values();
 	for (var input = inputs.next(); input && !input.done; input = inputs.next()){
 		var c = new MIDIController(input.value.name, input.value.manufacturer);
-		input.value.onmidimessage = onMIDIMessage;
+		input.value.onmidimessage = onMIDIMessage; //Bind event handler
 		controllers[input.value.id] = c;
 	}
 
@@ -28,6 +28,7 @@ function MIDILoadSuccess(midi) {
 }
 
 function onMIDIMessage(message) {
+	//Call correct event handler for MIDI controller
 	controllers[message.target.id].onMIDIMessage(message);
 }
 
@@ -60,11 +61,11 @@ class MIDIController {
 			}
 		}
 		
-		console.log(this.device, this.currentlyOnNotes);
+		console.info(this.device, this.currentlyOnNotes);
 	}
 }
 
-//Help functions for MIDI:
+//Helper functions for MIDI:
 function mapMIDItoNoteName(MIDINumber){
 	var noteNumber = MIDINumber%12; //Note number in semitones/halfsteps relative to C
 	var noteName = noteNames[noteNumber]; //Mapped note name
