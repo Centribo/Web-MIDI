@@ -1,4 +1,3 @@
-var noteNames = ["C", "C#/Db", "D", "Eb/D#", "E", "F", "F#/Gb", "G", "Ab/G#", "A", "Bb/A#", "B"];
 var controllers = {}; //Dictionary/Associative array of MIDIControllers
 
 function loadMIDIDevices(){
@@ -63,16 +62,4 @@ class MIDIController {
 		
 		console.info(this.device, this.currentlyOnNotes);
 	}
-}
-
-//Helper functions for MIDI:
-function mapMIDItoNoteName(MIDINumber){
-	var noteNumber = MIDINumber%12; //Note number in semitones/halfsteps relative to C
-	var noteName = noteNames[noteNumber]; //Mapped note name
-	var octave = Math.floor(MIDINumber/12)-1;
-	return [noteNumber, octave, noteName];
-}
-
-function mapMIDItoNoteFrequency(MIDINumber){
-	return Math.pow(2, ((MIDINumber - 69) / 12)) * 440;
 }
