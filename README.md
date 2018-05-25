@@ -1,4 +1,4 @@
 # web-midi
 
 ## TODO:
-* Dynamically spawn keyboard size & colours
+* Integrate VexFlow notation renderer

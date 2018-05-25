@@ -1,17 +1,87 @@
 var isMouseDown = false;
+var highlightedKeyColor = "#ffaa00";
+var pressedKeyColor = "#ff0000";
 var whiteKeyColor = "#cbcbcb";
+var whiteKeyBorderColor = "#aaaaaa";
 var blackKeyColor = "#222222";
+var blackKeyBorderColor = "#000000";
 
 //Given starting MIDI note number, range of piano (in semitones), and the HTML dom to attach the piano to,
-//this function creates HTML elements for a keyboard
-function initializePiano(startingNoteNumber = 48, range = 25, keyboardHTML = document.getElementById("keyboard")){
+//this function creates HTML elements for a piano
+function initializePiano(startingNoteNumber = 48, range = 25, pianoHTML = document.getElementById("piano")){
 	var endingNoteNumber = startingNoteNumber + range;
+	var whiteKeyCount = 0;
 	for(var i = startingNoteNumber; i < endingNoteNumber; i++){
-		keyboardHTML.innerHTML += getNoteHTML(i);
+		pianoHTML.innerHTML += getNoteHTML(i);
+		var noteName = MIDINotes.MIDItoNoteName(i)[2];
 	}
 
+	//Determine if right-most note is a white key
+	var lastNote = MIDINotes.MIDItoNoteName(endingNoteNumber-1)[2];
+	var lastNoteIsWhite = false;
+	if(lastNote == "A" ||
+		lastNote == "B" ||
+		lastNote == "C" ||
+		lastNote == "D" ||
+		lastNote == "E" ||
+		lastNote == "F" ||
+		lastNote == "G"){
+		
+		lastNoteIsWhite = true;
+	}
+
+	//Get HTML DOM elements for white and black keys
 	var whiteKeys = document.getElementsByClassName("white");
 	var blackKeys = document.getElementsByClassName("black");
+
+	//Calculate sizes and offets
+	var units = "vw";
+	var pianoWidth = 80;
+	var pianoHeight = pianoWidth * 0.18;
+	var borderWidth = pianoWidth * 0.0015;
+	var whiteKeyWidth = pianoWidth/whiteKeys.length;
+	var whiteKeyHeight = pianoHeight;
+	var blackKeyWidth = whiteKeyWidth * 0.55;
+	var blackKeyHeight = whiteKeyHeight * 0.55;
+	var blackKeyOffset = (-(blackKeyWidth/2) - borderWidth);
+
+	//Assign CSS to each key
+	for(var i = 0; i < whiteKeys.length; i++){
+		whiteKeys[i].style.cssText =
+		"float: left;" +
+		"position: relative;" +
+		"z-index: 1;" +
+		"height: " + whiteKeyHeight + units + ";" +
+		"width: " + whiteKeyWidth + units + ";" +
+		"border-top: " + borderWidth +units + " solid " + whiteKeyBorderColor + ";" +
+		"border-bottom: " + borderWidth +units + " solid " + whiteKeyBorderColor + ";" +
+		"border-left: " + borderWidth +units + " solid " + whiteKeyBorderColor + ";" +
+		"background-color: " + whiteKeyColor + ";";
+		if(whiteKeys[i].classList.contains("A") ||
+			whiteKeys[i].classList.contains("B") ||
+			whiteKeys[i].classList.contains("D") ||
+			whiteKeys[i].classList.contains("E") ||
+			whiteKeys[i].classList.contains("G")){
+
+			whiteKeys[i].style.cssText += "margin: 0 0 0 " + blackKeyOffset + units + ";";
+		}
+
+		if(lastNoteIsWhite && i == whiteKeys.length-1){
+			console.log("!");
+			whiteKeys[i].style.cssText += "border-right: " + borderWidth + units + " solid " + whiteKeyBorderColor + ";"; 
+		}
+	}
+	for(var i = 0; i < blackKeys.length; i++){
+		blackKeys[i].style.cssText =
+		"float: left;" +
+		"position: relative;" +
+		"z-index: 2;" +
+		"margin: 0 0 0 " + blackKeyOffset + units + ";" +
+		"height: " + blackKeyHeight + units + ";" +
+		"width: " + blackKeyWidth + units + ";" +
+		"border: " + borderWidth +units + " solid " + blackKeyBorderColor + ";" +
+		"background-color: " + blackKeyColor + ";";
+	}
 }
 
 function getNoteHTML(noteNumber){
@@ -29,8 +99,16 @@ function getNoteHTML(noteNumber){
 		return '<div class="key black ' + noteName + '" data-note="' + noteNumber + '" onmousedown="notePressed(this)" onmouseup="noteReleased(this)" onmouseenter="noteEnter(this)" onmouseleave="noteExit(this)"></div>';
 }
 
+function pressKey(noteNumber){
+	
+}
+
+function releaseKey(noteNumber){
+
+}
+
 function notePressed(element){
-	element.style.backgroundColor = "yellow";
+	element.style.backgroundColor = pressedKeyColor;
 	isMouseDown = true;
 }
 
@@ -46,7 +124,9 @@ function noteReleased(element){
 
 function noteEnter(element){
 	if(isMouseDown){
-		element.style.backgroundColor = "yellow";
+		element.style.backgroundColor = pressedKeyColor;
+	} else {
+		// element.style.backgroundColor = highlightedKeyColor;
 	}
 }
 
