@@ -2,12 +2,12 @@ VF = Vex.Flow;
 var div = document.getElementById("notes")
 var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 renderer.resize(500, 250);
-var context = renderer.getContext();
+var ctx = renderer.getContext();
 
 var stave = new VF.Stave(10, 40, 400);
 stave.addClef("treble");
 stave.addTimeSignature("4/4");
-stave.setContext(context);
+stave.setContext(ctx);
 stave.draw();
 
 function changeNotes(){
@@ -19,7 +19,10 @@ function changeNotes(){
 	voice.addTickables(notes);
 	var formatter = new VF.Formatter();
 	formatter.joinVoices([voice]).format([voice], 400);
-	voice.draw(context, stave);
+	voice.draw(ctx, stave);
+
+	ctx.setFont("arial", 25, "bold");
+	ctx.fillText("Hello World!", 100, 100);
 }
 
 function renderNote(MIDINumber, octave = 4){
