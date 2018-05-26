@@ -1,0 +1,19 @@
+{
+  "name": "web-midi",
+  "version": "0.1.0",
+  "description": "## TODO: * Integrate VexFlow notation renderer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Centribo/web-midi.git"
+  },
+  "author": "Adam Leung",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Centribo/web-midi/issues"
+  },
+  "homepage": "https://github.com/Centribo/web-midi#readme"
+}
