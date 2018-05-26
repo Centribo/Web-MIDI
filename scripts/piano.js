@@ -1,4 +1,3 @@
-var isMouseDown = false;
 var highlightedKeyColor = "#ffaa00";
 var pressedKeyColor = "#ff0000";
 var whiteKeyColor = "#cbcbcb";
@@ -6,18 +5,31 @@ var whiteKeyBorderColor = "#aaaaaa";
 var blackKeyColor = "#222222";
 var blackKeyBorderColor = "#000000";
 
+var firstMIDINote;
+var lastMIDINote;
+var keys;
+var onKeyPress;
+var onKeyRelease;
+var isMouseDown = false;
+
+
 //Given starting MIDI note number, range of piano (in semitones), and the HTML dom to attach the piano to,
 //this function creates HTML elements for a piano
 function initializePiano(startingNoteNumber = 48, range = 25, pianoHTML = document.getElementById("piano")){
-	var endingNoteNumber = startingNoteNumber + range;
+	var endingNoteNumber = startingNoteNumber + range - 1;
+	firstMIDINote = startingNoteNumber;
+	lastMIDINote = endingNoteNumber;
 	var whiteKeyCount = 0;
-	for(var i = startingNoteNumber; i < endingNoteNumber; i++){
+	for(var i = startingNoteNumber; i <= endingNoteNumber; i++){
 		pianoHTML.innerHTML += getNoteHTML(i);
 		var noteName = MIDINotes.MIDItoNoteName(i)[2];
 	}
 
+	//Keep reference to HTML elements
+	keys = pianoHTML.querySelectorAll(".key");
+
 	//Determine if right-most note is a white key
-	var lastNote = MIDINotes.MIDItoNoteName(endingNoteNumber-1)[2];
+	var lastNote = MIDINotes.MIDItoNoteName(endingNoteNumber)[2];
 	var lastNoteIsWhite = false;
 	if(lastNote == "A" ||
 		lastNote == "B" ||
@@ -66,8 +78,8 @@ function initializePiano(startingNoteNumber = 48, range = 25, pianoHTML = docume
 			whiteKeys[i].style.cssText += "margin: 0 0 0 " + blackKeyOffset + units + ";";
 		}
 
+		//Special case for right border of last key (if it's a white key only)
 		if(lastNoteIsWhite && i == whiteKeys.length-1){
-			console.log("!");
 			whiteKeys[i].style.cssText += "border-right: " + borderWidth + units + " solid " + whiteKeyBorderColor + ";"; 
 		}
 	}
@@ -99,12 +111,27 @@ function getNoteHTML(noteNumber){
 		return '<div class="key black ' + noteName + '" data-note="' + noteNumber + '" onmousedown="notePressed(this)" onmouseup="noteReleased(this)" onmouseenter="noteEnter(this)" onmouseleave="noteExit(this)"></div>';
 }
 
-function pressKey(noteNumber){
-	
-}
-
-function releaseKey(noteNumber){
-
+//"pressed", "released", "highlighted", "custom"
+function changeKeyColor(noteNumber, state = "pressed", color = "#000000"){
+	var key = findKey(noteNumber);
+	if(key != null){
+		if(state == "pressed"){
+			key.style.backgroundColor = pressedKeyColor;
+		} else if(state == "released"){
+			if(key.classList.contains("white")){
+				key.style.backgroundColor = whiteKeyColor;
+			} else {
+				key.style.backgroundColor = blackKeyColor;
+			}
+		} else if(state == "highlighted"){
+			key.style.backgroundColor = highlightedKeyColor;
+		} else if(state == "custom"){
+			key.style.backgroundColor = color;
+		} else {
+			console.error("changeKeyColor :: state is invalid");
+		}
+	}
+	console.error("changeKeyColor :: key not found");
 }
 
 function notePressed(element){
@@ -125,8 +152,6 @@ function noteReleased(element){
 function noteEnter(element){
 	if(isMouseDown){
 		element.style.backgroundColor = pressedKeyColor;
-	} else {
-		// element.style.backgroundColor = highlightedKeyColor;
 	}
 }
 
@@ -136,4 +161,11 @@ function noteExit(element){
 	} else {
 		element.style.backgroundColor = blackKeyColor;
 	}
+}
+
+function findKey(noteNumber){
+	if(noteNumber >= firstMIDINote && noteNumber <= lastMIDINote){
+		return keys[noteNumber - firstMIDINote];
+	}
+	return null;
 }
