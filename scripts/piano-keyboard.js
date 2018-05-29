@@ -1,7 +1,3 @@
-function initializePiano(){
-	var piano = new PianoKeyboard();
-}
-
 class PianoKeyboard {
 	constructor(pianoHTML = document.getElementById("pianoKeyboard"), startingNoteNumber = 48, range = 25){
 		//Color/styling

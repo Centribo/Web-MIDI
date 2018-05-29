@@ -26,5 +26,9 @@ function changeNotes(){
 }
 
 function renderNote(MIDINumber, octave = 4){
+	
+}
 
+function initializePiano(){
+	var piano = new PianoKeyboard();
 }
