@@ -2,7 +2,9 @@
 	<head>
 		<title>MIDI</title>
 		<link rel="stylesheet" href="./css/keyboard_style.css">
-		<script src="./node_modules/vexflow/releases/vexflow-min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="./node_modules/abcjs/abcjs-midi.css">
+		<script src="./node_modules/abcjs/bin/abcjs_midi_5.1.2-min.js" type="text/javascript"></script>
 		<script src="./scripts/midi-notes.js"></script>
 		<script src="./scripts/midi-controller.js"></script>
 		<script src="./scripts/piano-keyboard.js"></script>
@@ -10,7 +12,9 @@
 	</head>
 	<body>
 		<div id="notes"></div>
+		<div id="notation"></div>
 		<button onclick="changeNotes()">Change notes</button>
+		<button onclick="clearNotes()">Clear notes</button>
 		<button onclick="loadMIDIDevices()">Load MIDI devices</button>
 		<button onclick="initializePiano()">Load piano</button>
 		<div id="pianoKeyboard"></div>

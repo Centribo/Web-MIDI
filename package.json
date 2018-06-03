@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Centribo/web-midi/issues"
   },
-  "homepage": "https://github.com/Centribo/web-midi#readme"
+  "homepage": "https://github.com/Centribo/web-midi#readme",
+  "dependencies": {
+    "abcjs": "^5.1.2"
+  }
 }
