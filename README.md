@@ -1,5 +1,5 @@
 # web-midi
 
 ## TODO:
-* Integrate VexFlow notation renderer
+* Integrate ABCJS notation renderer
 * Callbacks for piano
