@@ -2,4 +2,4 @@
 
 ## TODO:
 * Integrate ABCJS notation renderer
-* Callbacks for piano
+* Callbacks for MIDI controllers

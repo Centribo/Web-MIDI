@@ -22,7 +22,6 @@ class PianoKeyboard {
 		var whiteKeyCount = 0;
 		for(var i = startingNoteNumber; i <= this.endingNoteNumber; i++){
 			pianoHTML.innerHTML += PianoKeyboard.getNoteHTML(i);
-			var noteName = MIDINotes.MIDItoNoteName(i)[2];
 		}
 		//Keep reference to HTML elements
 		this.keys = pianoHTML.querySelectorAll(".key");
@@ -36,7 +35,7 @@ class PianoKeyboard {
 		}
 
 		//Determine if right-most note is a white key
-		var lastNote = MIDINotes.MIDItoNoteName(this.endingNoteNumber)[2];
+		var lastNote = MIDINotes.MIDIToNoteName(this.endingNoteNumber).noteName;
 		var lastNoteIsWhite = false;
 		if(lastNote == "A" ||
 			lastNote == "B" ||
@@ -128,6 +127,9 @@ class PianoKeyboard {
 	notePressed(event){
 		event.target.style.backgroundColor = this.pressedKeyColor;
 		this.isMouseDown = true;
+		if(typeof this.onKeyPress == 'function'){
+			this.onKeyPress(event.target.dataset.note);
+		}
 	}
 	
 	noteReleased(event){
@@ -136,21 +138,33 @@ class PianoKeyboard {
 		} else {
 			event.target.style.backgroundColor = this.blackKeyColor;
 		}
-		
 		this.isMouseDown = false;
+
+		if(typeof this.onKeyRelease == 'function'){
+			this.onKeyRelease(event.target.dataset.note);
+		}
 	}
 	
 	noteEnter(event){
 		if(this.isMouseDown){
 			event.target.style.backgroundColor = this.pressedKeyColor;
+			if(typeof this.onKeyPress == 'function'){
+				this.onKeyPress(event.target.dataset.note);
+			}
 		}
 	}
 	
 	noteExit(event){
-		if(event.target.classList.contains("white")){
-			event.target.style.backgroundColor = this.whiteKeyColor;
-		} else {
-			event.target.style.backgroundColor = this.blackKeyColor;
+		if(this.isMouseDown){
+			if(event.target.classList.contains("white")){
+				event.target.style.backgroundColor = this.whiteKeyColor;
+			} else {
+				event.target.style.backgroundColor = this.blackKeyColor;
+			}
+
+			if(typeof this.onKeyRelease == 'function'){
+				this.onKeyRelease(event.target.dataset.note);
+			}
 		}
 	}
 	
@@ -162,8 +176,8 @@ class PianoKeyboard {
 	}
 
 	static getNoteHTML(noteNumber){
-		var noteName = MIDINotes.MIDItoNoteName(noteNumber)[2];
-		var octave = MIDINotes.MIDItoNoteName(noteNumber)[1];
+		var noteName = MIDINotes.MIDIToNoteName(noteNumber).noteName;
+		var octave = MIDINotes.MIDIToNoteName(noteNumber).octave;
 		if(noteName == "C" ||
 			noteName == "D" ||
 			noteName == "E" ||

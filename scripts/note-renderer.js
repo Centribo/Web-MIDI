@@ -1,8 +1,12 @@
 function changeNotes(){
-	var notes = "";
-	for(var i = 60; i < 84; i++){
-		notes += MIDINotes.MIDINoteToABCNote(i) + " ";
-	}
+	// var notes = "";
+	// for(var i = 60; i < 84; i++){
+	// 	notes += MIDINotes.MIDINoteToABCNote(i) + " ";
+	// }
+
+	var i = getRandomInt(60, 84);
+	var notes = MIDINotes.MIDINoteToABCNote(i) + " ";
+
 	var sample = 
 	"X:1 \n" + //Reference number 
 	"T:Notes \n" + //Title
@@ -24,6 +28,19 @@ function renderNote(MIDINumber, octave = 4){
 
 function initializePiano(){
 	var piano = new PianoKeyboard();
+	piano.onKeyPress = keyPressed;
+	piano.onKeyRelease = keyReleased;
 }
 
-console.log(MIDINotes.MIDINoteToABCNote(60));
+//Returns random int in the given range (inclusive)
+function getRandomInt(min = 0, max = 1){
+	return Math.floor(Math.random() * (max-min+1)) + min;
+}
+
+function keyPressed(note){
+	console.log("Note pressed", note);
+}
+
+function keyReleased(note){
+	console.log("Note released", note);
+}
