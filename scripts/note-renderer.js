@@ -1,11 +1,24 @@
-function changeNotes(){
-	// var notes = "";
-	// for(var i = 60; i < 84; i++){
-	// 	notes += MIDINotes.MIDINoteToABCNote(i) + " ";
-	// }
-
+function displayRandomNote(){
 	var i = getRandomInt(60, 84);
 	var notes = MIDINotes.MIDINoteToABCNote(i) + " ";
+
+	var sample = 
+	"X:1 \n" + //Reference number 
+	"T:Notes \n" + //Title
+	"M:4/4 \n" + //Meter
+	"L:1/4 \n" + //Note length
+	"K:C \n" + //Key
+	notes + "|]";
+
+	ABCJS.renderAbc("notation", sample);
+}
+
+function displayChromaticScale(){
+	var notes = "";
+	for(var i = 60; i < 84; i++){
+		notes += MIDINotes.MIDINoteToABCNote(i) + " ";
+	}
+
 
 	var sample = 
 	"X:1 \n" + //Reference number 
@@ -27,6 +40,7 @@ function renderNote(MIDINumber, octave = 4){
 }
 
 var piano;
+load();
 
 function load(){
 	piano = new PianoKeyboard();

@@ -10,11 +10,11 @@ class MIDIControllers {
 	}
 
 	static getMIDIControllers(){
-		return controllers;
+		return midiControllers;
 	}
 }
 
-var controllers = {}; //Dictionary/Associative array of MIDIControllers
+var midiControllers = {}; //Dictionary/Associative array of MIDIControllers
 
 function MIDILoadSuccess(midi) {
 	if(midi.inputs.size < 1){
@@ -22,12 +22,12 @@ function MIDILoadSuccess(midi) {
 		return -1;
 	}
 	
-	//Iterate through devices and attach controllers to them
+	//Iterate through devices and attach midiControllers to them
 	var inputs = midi.inputs.values();
 	for (var input = inputs.next(); input && !input.done; input = inputs.next()){
 		var c = new MIDIController(input.value.name, input.value.manufacturer, input.value.id);
 		input.value.onmidimessage = onMIDIMessage; //Bind event handler
-		controllers[input.value.id] = c;
+		midiControllers[input.value.id] = c;
 	}
 
 	return 0;
@@ -35,7 +35,7 @@ function MIDILoadSuccess(midi) {
 
 function onMIDIMessage(message) {
 	//Call correct event handler for MIDI controller
-	controllers[message.target.id].onMIDIMessage(message);
+	midiControllers[message.target.id].onMIDIMessage(message);
 }
 
 function MIDILoadFailure() {
