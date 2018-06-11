@@ -99,7 +99,7 @@ class PianoKeyboard {
 			"border: " + borderWidth + units + " solid " + this.blackKeyBorderColor + ";" +
 			"background-color: " + this.blackKeyColor + ";";
 		}
-	}
+	} //End constructor
 
 	//"pressed", "released", "highlighted", "custom"
 	changeKeyColor(noteNumber, state = "pressed", color = "#000000"){
@@ -120,8 +120,9 @@ class PianoKeyboard {
 			} else {
 				console.error("changeKeyColor :: state is invalid");
 			}
+		} else {
+			console.error("changeKeyColor :: key not found");
 		}
-		console.error("changeKeyColor :: key not found");
 	}
 
 	notePressed(event){

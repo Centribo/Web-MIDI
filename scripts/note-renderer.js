@@ -26,10 +26,22 @@ function renderNote(MIDINumber, octave = 4){
 	
 }
 
+var piano;
+
+function load(){
+	piano = new PianoKeyboard();
+	piano.onKeyPress = pianoKeyPressed;
+	piano.onKeyRelease = pianoKeyReleased;
+	var controllers;
+	MIDIControllers.loadMIDIDevices().then(function(){
+		controllers = MIDIControllers.getMIDIControllers();
+		controllers["input-0"].onKeyPress = MIDIKeyPressed;
+		controllers["input-0"].onKeyRelease = MIDIKeyReleased;
+	});
+}
+
 function initializePiano(){
-	var piano = new PianoKeyboard();
-	piano.onKeyPress = keyPressed;
-	piano.onKeyRelease = keyReleased;
+	
 }
 
 //Returns random int in the given range (inclusive)
@@ -37,10 +49,17 @@ function getRandomInt(min = 0, max = 1){
 	return Math.floor(Math.random() * (max-min+1)) + min;
 }
 
-function keyPressed(note){
-	console.log("Note pressed", note);
+function pianoKeyPressed(note){
 }
 
-function keyReleased(note){
-	console.log("Note released", note);
+function pianoKeyReleased(note){
 }
+
+function MIDIKeyPressed(note){
+	piano.changeKeyColor(note, "pressed");
+}
+
+function MIDIKeyReleased(note){
+	piano.changeKeyColor(note, "released");
+}
+
