@@ -18,7 +18,7 @@ var midiControllers = {}; //Dictionary/Associative array of MIDIControllers
 
 function MIDILoadSuccess(midi) {
 	if(midi.inputs.size < 1){
-		console.alert("No MIDI input devices found!");
+		console.info("No MIDI input devices found!");
 		return -1;
 	}
 	
