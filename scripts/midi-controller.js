@@ -67,7 +67,7 @@ class MIDIController {
 				this.currentlyOnNotes.push(message.data[1]);
 			}
 			if(typeof this.onKeyPress == 'function'){
-				this.onKeyPress(message.data[1]);
+				this.onKeyPress(message.data[1], message.data[2]);
 			}
 		} else if(message.data[0] == 128){
 			var index = this.currentlyOnNotes.indexOf(message.data[1]);
@@ -75,7 +75,7 @@ class MIDIController {
 				this.currentlyOnNotes.splice(index, 1);
 			}
 			if(typeof this.onKeyRelease == 'function'){
-				this.onKeyRelease(message.data[1]);
+				this.onKeyRelease(message.data[1], message.data[2]);
 			}
 		}
 		

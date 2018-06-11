@@ -1,3 +1,6 @@
+var piano;
+load();
+
 function displayRandomNote(){
 	var i = getRandomInt(60, 84);
 	renderNote(i);
@@ -39,8 +42,8 @@ function renderNote(MIDINumber){
 	ABCJS.renderAbc("notation", sample);
 }
 
-var piano;
-load();
+function renderChord(MIDINumbers){
+}
 
 function load(){
 	piano = new PianoKeyboard();
@@ -56,31 +59,35 @@ function load(){
 	});
 }
 
-function initializePiano(){
-	
-}
-
 //Returns random int in the given range (inclusive)
 function getRandomInt(min = 0, max = 1){
 	return Math.floor(Math.random() * (max-min+1)) + min;
 }
 
 function pianoKeyPressed(note){
-	MIDI.noteOn(0, note, 127, 0);
+	if(isMIDIJsLoaded){
+		MIDI.noteOn(0, note, 127, 0);
+	}
 }
 
 function pianoKeyReleased(note){
-	MIDI.noteOff(0, note, 127, 0);
+	if(isMIDIJsLoaded){
+		MIDI.noteOff(0, note, 127, 0);
+	}
 }
 
-function MIDIKeyPressed(note){
+function MIDIKeyPressed(note, velocity){
 	piano.changeKeyColor(note, "pressed");
-	MIDI.noteOn(0, note, 127, 0);
+	if(isMIDIJsLoaded){
+		MIDI.noteOn(0, note, velocity, 0);
+	}
 }
 
-function MIDIKeyReleased(note){
+function MIDIKeyReleased(note, velocity){
 	piano.changeKeyColor(note, "released");
-	MIDI.noteOff(0, note, 127, 0);
+	if(isMIDIJsLoaded){
+		MIDI.noteOff(0, note, velocity, 0);
+	}
 }
 
 function isEmpty(obj) {
@@ -92,21 +99,17 @@ function isEmpty(obj) {
 	return JSON.stringify(obj) === JSON.stringify({});
 }
 
+var isMIDIJsLoaded = false;
+
 window.onload = function () {
 	MIDI.loadPlugin({
 		soundfontUrl: "./soundfont/",
 		instrument: "acoustic_grand_piano",
 		onprogress: function(state, progress) {
-			console.log(state, progress);
+			// console.log(state, progress);
 		},
 		onsuccess: function() {
-			var delay = 0; // play one note every quarter second
-			var note = 50; // the MIDI note
-			var velocity = 127; // how hard the note hits
-			// play the note
-			MIDI.setVolume(0, 127);
-			MIDI.noteOn(0, note, velocity, delay);
-			MIDI.noteOff(0, note, delay + 0.75);
+			isMIDIJsLoaded = true;
 		}
 	});
 };
