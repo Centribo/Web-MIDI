@@ -43,6 +43,21 @@ function renderNote(MIDINumber){
 }
 
 function renderChord(MIDINumbers){
+	var notes = "[";
+	for(var i = 0; i < MIDINumbers.length; i++){
+		notes += MIDINotes.MIDINoteToABCNote(MIDINumbers[i]) + " ";
+	}
+	notes += "]";
+
+	var sample = 
+	"X:1 \n" + //Reference number 
+	"T:Notes \n" + //Title
+	"M:4/4 \n" + //Meter
+	"L:1/4 \n" + //Note length
+	"K:C \n" + //Key
+	notes + "|]";
+
+	ABCJS.renderAbc("notation", sample);
 }
 
 function load(){
@@ -68,26 +83,35 @@ function pianoKeyPressed(note){
 	if(isMIDIJsLoaded){
 		MIDI.noteOn(0, note, 127, 0);
 	}
+
+	renderNote(note);
 }
 
 function pianoKeyReleased(note){
 	if(isMIDIJsLoaded){
 		MIDI.noteOff(0, note, 127, 0);
 	}
+
+	renderNote(note);
 }
 
-function MIDIKeyPressed(note, velocity){
+function MIDIKeyPressed(device, note, velocity){
 	piano.changeKeyColor(note, "pressed");
 	if(isMIDIJsLoaded){
 		MIDI.noteOn(0, note, velocity, 0);
 	}
+
+	renderChord(device.currentlyOnNotes);
 }
 
-function MIDIKeyReleased(note, velocity){
+function MIDIKeyReleased(device, note, velocity){
+	
 	piano.changeKeyColor(note, "released");
 	if(isMIDIJsLoaded){
 		MIDI.noteOff(0, note, velocity, 0);
 	}
+
+	renderChord(device.currentlyOnNotes);
 }
 
 function isEmpty(obj) {

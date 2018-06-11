@@ -9,10 +9,16 @@ body {
 	grid-template-rows: 1fr 1fr 1fr;
 }
 
-#notation {
+#notation-wrapper {
 	grid-column: 1/4;
 	grid-row: 1/2;
 
+	height: 150px;
+
+	align-self: center;
+	justify-self: center;
+}
+#notation {
 	align-self: center;
 	justify-self: center;
 }
