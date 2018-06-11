@@ -24,3 +24,11 @@ body {
 	align-self: center;
 	justify-self: center;
 }
+
+button {
+	width: 300px;
+	height: 100px;
+	font-size: 16pt;
+	align-self: center;
+	justify-self: center;
+}

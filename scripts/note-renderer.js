@@ -8,8 +8,8 @@ function displayChromaticScale(){
 	for(var i = 60; i < 84; i++){
 		notes += MIDINotes.MIDINoteToABCNote(i) + " ";
 	}
-
-
+	
+	
 	var sample = 
 	"X:1 \n" + //Reference number 
 	"T:Notes \n" + //Title
@@ -17,7 +17,7 @@ function displayChromaticScale(){
 	"L:1/4 \n" + //Note length
 	"K:C \n" + //Key
 	notes + "|]";
-
+	
 	ABCJS.renderAbc("notation", sample);
 }
 
@@ -27,7 +27,7 @@ function clearNotes(){
 
 function renderNote(MIDINumber){
 	var notes = MIDINotes.MIDINoteToABCNote(MIDINumber) + " ";
-
+	
 	var sample = 
 	"X:1 \n" + //Reference number 
 	"T:Notes \n" + //Title
@@ -35,7 +35,7 @@ function renderNote(MIDINumber){
 	"L:1/4 \n" + //Note length
 	"K:C \n" + //Key
 	notes + "|]";
-
+	
 	ABCJS.renderAbc("notation", sample);
 }
 
@@ -49,8 +49,10 @@ function load(){
 	var controllers;
 	MIDIControllers.loadMIDIDevices().then(function(){
 		controllers = MIDIControllers.getMIDIControllers();
-		controllers["input-0"].onKeyPress = MIDIKeyPressed;
-		controllers["input-0"].onKeyRelease = MIDIKeyReleased;
+		if(!isEmpty(controllers)){
+			controllers["input-0"].onKeyPress = MIDIKeyPressed;
+			controllers["input-0"].onKeyRelease = MIDIKeyReleased;
+		}
 	});
 }
 
@@ -77,3 +79,11 @@ function MIDIKeyReleased(note){
 	piano.changeKeyColor(note, "released");
 }
 
+function isEmpty(obj) {
+	for(var prop in obj) {
+		if(obj.hasOwnProperty(prop))
+		return false;
+	}
+	
+	return JSON.stringify(obj) === JSON.stringify({});
+}
