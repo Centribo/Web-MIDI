@@ -66,17 +66,21 @@ function getRandomInt(min = 0, max = 1){
 }
 
 function pianoKeyPressed(note){
+	MIDI.noteOn(0, note, 127, 0);
 }
 
 function pianoKeyReleased(note){
+	MIDI.noteOff(0, note, 127, 0);
 }
 
 function MIDIKeyPressed(note){
 	piano.changeKeyColor(note, "pressed");
+	MIDI.noteOn(0, note, 127, 0);
 }
 
 function MIDIKeyReleased(note){
 	piano.changeKeyColor(note, "released");
+	MIDI.noteOff(0, note, 127, 0);
 }
 
 function isEmpty(obj) {
@@ -87,3 +91,22 @@ function isEmpty(obj) {
 	
 	return JSON.stringify(obj) === JSON.stringify({});
 }
+
+window.onload = function () {
+	MIDI.loadPlugin({
+		soundfontUrl: "./soundfont/",
+		instrument: "acoustic_grand_piano",
+		onprogress: function(state, progress) {
+			console.log(state, progress);
+		},
+		onsuccess: function() {
+			var delay = 0; // play one note every quarter second
+			var note = 50; // the MIDI note
+			var velocity = 127; // how hard the note hits
+			// play the note
+			MIDI.setVolume(0, 127);
+			MIDI.noteOn(0, note, velocity, delay);
+			MIDI.noteOff(0, note, delay + 0.75);
+		}
+	});
+};
