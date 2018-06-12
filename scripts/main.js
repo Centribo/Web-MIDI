@@ -35,9 +35,11 @@ function getRandomInt(min = 0, max = 1){
 	return Math.floor(Math.random() * (max-min+1)) + min;
 }
 
-function renderRandomNote(){
+function randomNote(){
 	var i = getRandomInt(60, 84);
 	immediateRenderNote(i);
+	MIDI.noteOn(0, i, 127, 0);
+	MIDI.noteOff(0, i, 127, 1);
 }
 
 function pianoKeyPressed(note){
@@ -53,7 +55,8 @@ function pianoKeyReleased(note){
 		MIDI.noteOff(0, note, 127, 0);
 	}
 
-	immediateRenderNote(note);
+	// immediateRenderNote(note);
+	clearNotes();
 }
 
 function MIDIKeyPressed(device, note, velocity){
@@ -72,6 +75,16 @@ function MIDIKeyReleased(device, note, velocity){
 	}
 
 	immediateRenderChord(device.currentlyOnNotes);
+}
+
+//Renders a two-octave chromatic scale
+function renderChromaticScale(){
+	musicalElements = "";
+	for(var i = 60; i < 84; i++){
+		musicalElements += MIDINotes.MIDINoteToABCNote(i) + " ";
+	}
+	
+	renderNotation();
 }
 
 function isEmpty(obj) {

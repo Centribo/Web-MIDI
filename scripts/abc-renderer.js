@@ -11,6 +11,7 @@ var referenceNumber = 1;
 var title = "Notes";
 var meter = "4/4";
 var noteLength = "1/4";
+var tempo = "120";
 var key = "C";
 var musicalElements = "";
 var notationID = "notation";
@@ -22,6 +23,7 @@ function constructABCString(){
 	"T:" + title + "\n" +
 	"M:" + meter + "\n" +
 	"L:" + noteLength + "\n" +
+	// "Q:" + tempo + "\n" +
 	"K:" + key + "\n" +
 	musicalElements + " |]";
 
@@ -99,16 +101,6 @@ function immediateRenderChord(MIDINumbers, duration = ""){
 		musicalElements += MIDINotes.MIDINoteToABCNote(MIDINumbers[i]) + duration + " ";
 	}
 	musicalElements += "]";
-	
-	renderNotation();
-}
-
-//Renders a two-octave chromatic scale
-function renderChromaticScale(){
-	musicalElements = "";
-	for(var i = 60; i < 84; i++){
-		musicalElements += MIDINotes.MIDINoteToABCNote(i) + " ";
-	}
 	
 	renderNotation();
 }
