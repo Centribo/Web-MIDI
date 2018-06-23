@@ -1,4 +1,5 @@
 var piano;
+var noteInputter;
 var isMIDIJsLoaded = false;
 
 window.onload = function () {
@@ -17,6 +18,8 @@ window.onload = function () {
 };
 
 function load(){
+	noteInputter = new NoteInputter();
+	noteInputter.pressKey();
 	piano = new PianoKeyboard();
 	piano.onKeyPress = pianoKeyPressed;
 	piano.onKeyRelease = pianoKeyReleased;

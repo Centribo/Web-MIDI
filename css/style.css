@@ -45,3 +45,18 @@ body {
 	align-self: center;
 	justify-self: center;
 }
+
+.note-inputter-button {
+	border: none;
+	border-radius: 4px;
+	margin: 5px;
+}
+.note-inputter-sharp {
+	background-color: hsl(0, 0%, 85%);
+}
+.note-inputter-natural {
+	background-color: hsl(0, 0%, 65%);
+}
+.note-inputter-flat {
+	background-color: hsl(0, 0%, 45%);
+}
