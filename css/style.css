@@ -3,10 +3,17 @@ body {
 }
 
 #main-wrapper {
-	height: 80vh;
+	height: 600px;
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-template-rows: 1fr 1fr 1fr;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+}
+
+#note-inputter {
+	height: 300px;
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-template-rows: repeat(3, 1fr);
 }
 
 #notation-wrapper {
@@ -31,7 +38,7 @@ body {
 	justify-self: center;
 }
 
-button {
+#main-wrapper > button {
 	width: 300px;
 	height: 100px;
 	font-size: 16pt;
