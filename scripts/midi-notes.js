@@ -8,11 +8,22 @@ var onlySharpsNoteNames = ["C", "C#",    "D", "D#",    "E", "F", "F#",    "G", "
 class MIDINotes {
 	//Helper functions for MIDI:
 	
-	//MIDI note to tuple:
+	//MIDI note to tuple: (nametype = 0, 1, 2 3 for regular, flipped, flats only, sharps only
 	//[Note number relative to C, Octave, name of note]
-	static MIDIToNoteName(MIDINumber){
+	static MIDIToNoteName(MIDINumber, nameType = 0){
 		var noteNumber = MIDINumber%12; //Note number in semitones/halfsteps relative to C
 		var noteName = noteNames[noteNumber]; //Mapped note name
+		switch(nameType){
+			case 1:
+			noteName = flippedNoteNames[noteNumber];
+			break;
+			case 2:
+			noteName = onlyFlatsNoteNames[noteNumber];
+			break;
+			case 3:
+			noteName = onlySharpsNoteNames[noteNumber];
+			break;
+		}
 		var octave = Math.floor(MIDINumber/12)-1;
 		return {
 			noteName: noteName,
@@ -30,6 +41,21 @@ class MIDINotes {
 	//Return 0, 1, ..., 11 depending on what note name given
 	//Return -1 if note does not exist
 	static noteNameToNoteNumber(noteName){
+		switch(noteName){
+			case "B#":
+			noteName = "C";
+			break;
+			case "Cb":
+			noteName = "B";
+			break;
+			case "E#":
+			noteName = "F";
+			break;
+			case "Fb":
+			noteName = "E";
+			break;
+		}
+
 		var lookupResults = [
 			noteNames.indexOf(noteName),
 			flippedNoteNames.indexOf(noteName),

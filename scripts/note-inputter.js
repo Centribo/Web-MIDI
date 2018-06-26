@@ -8,19 +8,38 @@ class NoteInputter {
 		this.octave = octave;
 		this.keys = {}; //Dictionary
 
+		//Callbacks
+		this.onNoteClick;
+
 		for(var j = 1; j >= -1; j--){
 			for(var i = 0; i < notes.length; i++){
 				this.keys[notes[i] + accidentals[j+1]] = NoteInputter.getNoteHTML(notes[i], j);
 				inputterHTML.appendChild(this.keys[notes[i] + accidentals[j+1]]);
+				this.keys[notes[i] + accidentals[j+1]].addEventListener("click", this.noteClicked.bind(this));
 			}
 		}
+
+		// console.log(this.keys);
 	}
 
-	highlightKey(){
-		
+	addClassToNote(noteName, className){
+		this.keys[noteName].classList.add(className);
+	}
+
+	removeClassFromNote(noteName, className){
+		this.keys[noteName].classList.remove(className);
+	}
+
+	noteClicked(event){
+		if(typeof this.onNoteClick == 'function'){
+			this.onNoteClick({
+				noteName: event.target.dataset.note + event.target.dataset.accidental,
+				noteNumber: event.target.dataset.noteNumber
+			});
+		}
 	}
 	
-	static getNoteHTML(note, accidental = 0){
+	static getNoteHTML(note, accidental = 0, octave = 4){
 		note = note.toUpperCase();
 		var accidentalSymbol = "";
 		var accidentalClass = "natural";
@@ -31,13 +50,16 @@ class NoteInputter {
 			accidentalSymbol = "#";
 			accidentalClass = "sharp";	
 		}
+
+		var noteNumber = MIDINotes.noteNameToMIDI(note + accidentalSymbol, octave);
 		var button = document.createElement("button");
 		var text = document.createTextNode(note + accidentalSymbol);
 		button.appendChild(text);
 		button.classList.add("note-inputter-button");
 		button.classList.add("note-inputter-" + accidentalClass);
 		button.dataset.note = note;
-		button.dataset.accidental = accidentalClass;
+		button.dataset.accidental = accidentalSymbol;
+		button.dataset.noteNumber = noteNumber;
 		return button;
 	}
 }

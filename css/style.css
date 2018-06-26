@@ -60,3 +60,6 @@ body {
 .note-inputter-flat {
 	background-color: hsl(0, 0%, 45%);
 }
+.note-inputter-highlighted {
+	border: 5px solid red; 
+}

@@ -19,7 +19,7 @@ window.onload = function () {
 
 function load(){
 	noteInputter = new NoteInputter();
-	noteInputter.highlightKey();
+	noteInputter.onNoteClick = noteClicked;
 	piano = new PianoKeyboard();
 	piano.onKeyPress = pianoKeyPressed;
 	piano.onKeyRelease = pianoKeyReleased;
@@ -31,6 +31,14 @@ function load(){
 			controllers["input-0"].onKeyRelease = MIDIKeyReleased;
 		}
 	});
+}
+
+function noteClicked(data){
+	note = data.noteNumber;
+	if(isMIDIJsLoaded){
+		MIDI.noteOn(0, note, 127, 0);
+	}
+	immediateRenderNote(note);
 }
 
 //Returns random int in the given range (inclusive)
@@ -46,38 +54,29 @@ function randomNote(){
 }
 
 function pianoKeyPressed(note){
-	if(isMIDIJsLoaded){
-		MIDI.noteOn(0, note, 127, 0);
-	}
-
-	immediateRenderNote(note);
+	playMIDINote(note, 127);
+	immediateRenderChord([note]);
+	highlightNoteOnNoteInputter(note);
 }
 
 function pianoKeyReleased(note){
-	if(isMIDIJsLoaded){
-		MIDI.noteOff(0, note, 127, 0);
-	}
-
-	// immediateRenderNote(note);
+	stopMIDINote(note, 127);
 	clearNotes();
+	unhighlightNoteOnNoteInputter(note);
 }
 
 function MIDIKeyPressed(device, note, velocity){
 	piano.changeKeyColor(note, "pressed");
-	if(isMIDIJsLoaded){
-		MIDI.noteOn(0, note, velocity, 0);
-	}
-
+	playMIDINote(note, velocity);
 	immediateRenderChord(device.currentlyOnNotes);
+	highlightNoteOnNoteInputter(note);
 }
 
 function MIDIKeyReleased(device, note, velocity){
 	piano.changeKeyColor(note, "released");
-	if(isMIDIJsLoaded){
-		MIDI.noteOff(0, note, velocity, 0);
-	}
-
+	stopMIDINote(note, velocity);
 	immediateRenderChord(device.currentlyOnNotes);
+	unhighlightNoteOnNoteInputter(note);
 }
 
 //Renders a two-octave chromatic scale
@@ -101,4 +100,28 @@ function isEmpty(obj) {
 
 function changeVolume(element){
 	console.log(element);
+}
+
+function playMIDINote(note, velocity){
+	if(isMIDIJsLoaded){
+		MIDI.noteOn(0, note, velocity, 0);
+	}
+}
+
+function stopMIDINote(note, velocity){
+	if(isMIDIJsLoaded){
+		MIDI.noteOff(0, note, velocity, 0);
+	}
+}
+
+function highlightNoteOnNoteInputter(note, className = "note-inputter-highlighted"){
+	var noteNames = [MIDINotes.MIDIToNoteName(note, 2).noteName, MIDINotes.MIDIToNoteName(note, 3).noteName];
+	noteInputter.addClassToNote(noteNames[0], className);
+	noteInputter.addClassToNote(noteNames[1], className);
+}
+
+function unhighlightNoteOnNoteInputter(note, className = "note-inputter-highlighted"){
+	var noteNames = [MIDINotes.MIDIToNoteName(note, 2).noteName, MIDINotes.MIDIToNoteName(note, 3).noteName];
+	noteInputter.removeClassFromNote(noteNames[0], className);
+	noteInputter.removeClassFromNote(noteNames[1], className);
 }
