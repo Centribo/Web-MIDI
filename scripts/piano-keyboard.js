@@ -21,7 +21,7 @@ class PianoKeyboard {
 		//Start construction of HTML keyboard:
 		var whiteKeyCount = 0;
 		for(var i = startingNoteNumber; i <= this.endingNoteNumber; i++){
-			pianoHTML.innerHTML += PianoKeyboard.getNoteHTML(i);
+			pianoHTML.appendChild(PianoKeyboard.getNoteHTML(i));
 		}
 		//Keep reference to HTML elements
 		this.keys = pianoHTML.querySelectorAll(".key");
@@ -179,6 +179,12 @@ class PianoKeyboard {
 	static getNoteHTML(noteNumber){
 		var noteName = MIDINotes.MIDIToNoteName(noteNumber).noteName;
 		var octave = MIDINotes.MIDIToNoteName(noteNumber).octave;
+		var div = document.createElement("div");
+		
+		div.classList.add("key");
+		div.classList.add(noteName);
+		div.dataset.note = noteNumber;
+
 		if(noteName == "C" ||
 			noteName == "D" ||
 			noteName == "E" ||
@@ -186,8 +192,11 @@ class PianoKeyboard {
 			noteName == "G" ||
 			noteName == "A" ||
 			noteName == "B"){
-				return '<div class="key white ' + noteName + '" data-note="' + noteNumber + '"></div>';
-			}
-			return '<div class="key black ' + noteName + '" data-note="' + noteNumber + '"></div>';
+			div.classList.add("white");
+		} else {
+			div.classList.add("black");
+		}
+
+		return div;
 	}
 }
