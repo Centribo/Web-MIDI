@@ -1,23 +1,22 @@
 var notes = ["A", "B", "C", "D", "E", "F", "G"];
+var accidentals = ["b", "", "#"];
 
 class NoteInputter {
 	constructor(inputterHTML = document.getElementById("note-inputter"), octave = 4){
 		
 		//Tracking variables
 		this.octave = octave;
-		this.keys = new Array(3);
+		this.keys = {}; //Dictionary
 
 		for(var j = 1; j >= -1; j--){
-			this.keys[j+1] = new Array(notes.length);
 			for(var i = 0; i < notes.length; i++){
-				this.keys[j+1][i] = NoteInputter.getNoteHTML(notes[i], j);
-				// inputterHTML.innerHTML += NoteInputter.getNoteHTML(notes[i], j);
-				inputterHTML.appendChild(this.keys[j+1][i]);
+				this.keys[notes[i] + accidentals[j+1]] = NoteInputter.getNoteHTML(notes[i], j);
+				inputterHTML.appendChild(this.keys[notes[i] + accidentals[j+1]]);
 			}
 		}
 	}
 
-	pressKey(){
+	highlightKey(){
 		
 	}
 	

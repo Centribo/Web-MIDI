@@ -11,7 +11,7 @@ class PianoKeyboard {
 		//Tracking variables
 		this.startingNoteNumber = startingNoteNumber;
 		this.endingNoteNumber = startingNoteNumber + range - 1;
-		this.keys;
+		this.keys = {}; //Dictionary
 		this.isMouseDown = false;
 
 		//Callbacks
@@ -21,13 +21,9 @@ class PianoKeyboard {
 		//Start construction of HTML keyboard:
 		var whiteKeyCount = 0;
 		for(var i = startingNoteNumber; i <= this.endingNoteNumber; i++){
-			pianoHTML.appendChild(PianoKeyboard.getNoteHTML(i));
-		}
-		//Keep reference to HTML elements
-		this.keys = pianoHTML.querySelectorAll(".key");
-
-		//Add event listeners for mouse input
-		for (var i = 0; i < this.keys.length; i++){
+			this.keys[i] = PianoKeyboard.getNoteHTML(i);
+			pianoHTML.appendChild(this.keys[i]);
+			//Add event listeners for mouse input
 			this.keys[i].addEventListener("mousedown", this.notePressed.bind(this));
 			this.keys[i].addEventListener("mouseup", this.noteReleased.bind(this));
 			this.keys[i].addEventListener("mouseenter", this.noteEnter.bind(this));
@@ -103,7 +99,7 @@ class PianoKeyboard {
 
 	//"pressed", "released", "highlighted", "custom"
 	changeKeyColor(noteNumber, state = "pressed", color = "#000000"){
-		var key = this.findKey(noteNumber);
+		var key = this.keys[noteNumber];
 		if(key != null){
 			if(state == "pressed"){
 				key.style.backgroundColor = this.pressedKeyColor;
@@ -167,13 +163,6 @@ class PianoKeyboard {
 				this.onKeyRelease(event.target.dataset.note);
 			}
 		}
-	}
-	
-	findKey(noteNumber){
-		if(noteNumber >= this.startingNoteNumber && noteNumber <= this.endingNoteNumber){
-			return this.keys[noteNumber - this.startingNoteNumber];
-		}
-		return null;
 	}
 
 	static getNoteHTML(noteNumber){

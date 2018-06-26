@@ -19,7 +19,7 @@ window.onload = function () {
 
 function load(){
 	noteInputter = new NoteInputter();
-	noteInputter.pressKey();
+	noteInputter.highlightKey();
 	piano = new PianoKeyboard();
 	piano.onKeyPress = pianoKeyPressed;
 	piano.onKeyRelease = pianoKeyReleased;
