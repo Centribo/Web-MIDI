@@ -13,6 +13,7 @@ class PianoKeyboard {
 		this.endingNoteNumber = startingNoteNumber + range - 1;
 		this.keys = {}; //Dictionary
 		this.isMouseDown = false;
+		this.pianoHTML = pianoHTML;
 
 		//Callbacks
 		this.onKeyPress;
@@ -20,7 +21,7 @@ class PianoKeyboard {
 
 		//Start construction of HTML keyboard:
 		var whiteKeyCount = 0;
-		for(var i = startingNoteNumber; i <= this.endingNoteNumber; i++){
+		for(var i = this.startingNoteNumber; i <= this.endingNoteNumber; i++){
 			this.keys[i] = PianoKeyboard.getNoteHTML(i);
 			pianoHTML.appendChild(this.keys[i]);
 			//Add event listeners for mouse input
@@ -44,8 +45,8 @@ class PianoKeyboard {
 			lastNoteIsWhite = true;
 		}
 		//Get HTML DOM elements for white and black keys
-		var whiteKeys = pianoHTML.getElementsByClassName("white");
-		var blackKeys = pianoHTML.getElementsByClassName("black");
+		var whiteKeys = pianoHTML.getElementsByClassName("white-key");
+		var blackKeys = pianoHTML.getElementsByClassName("black-key");
 
 		//Calculate sizes and offets
 		var units = "vw";
@@ -97,6 +98,12 @@ class PianoKeyboard {
 		}
 	} //End constructor
 
+	destroy(){
+		while (this.pianoHTML.firstChild) {
+			this.pianoHTML.removeChild(this.pianoHTML.firstChild);
+		}
+	}
+
 	//"pressed", "released", "highlighted", "custom"
 	changeKeyColor(noteNumber, state = "pressed", color = "#000000"){
 		var key = this.keys[noteNumber];
@@ -104,7 +111,7 @@ class PianoKeyboard {
 			if(state == "pressed"){
 				key.style.backgroundColor = this.pressedKeyColor;
 			} else if(state == "released"){
-				if(key.classList.contains("white")){
+				if(key.classList.contains("white-key")){
 					key.style.backgroundColor = this.whiteKeyColor;
 				} else {
 					key.style.backgroundColor = this.blackKeyColor;
@@ -130,7 +137,7 @@ class PianoKeyboard {
 	}
 	
 	noteReleased(event){
-		if(event.target.classList.contains("white")){
+		if(event.target.classList.contains("white-key")){
 			event.target.style.backgroundColor = this.whiteKeyColor;
 		} else {
 			event.target.style.backgroundColor = this.blackKeyColor;
@@ -153,7 +160,7 @@ class PianoKeyboard {
 	
 	noteExit(event){
 		if(this.isMouseDown){
-			if(event.target.classList.contains("white")){
+			if(event.target.classList.contains("white-key")){
 				event.target.style.backgroundColor = this.whiteKeyColor;
 			} else {
 				event.target.style.backgroundColor = this.blackKeyColor;
@@ -181,9 +188,9 @@ class PianoKeyboard {
 			noteName == "G" ||
 			noteName == "A" ||
 			noteName == "B"){
-			div.classList.add("white");
+			div.classList.add("white-key");
 		} else {
-			div.classList.add("black");
+			div.classList.add("black-key");
 		}
 
 		return div;

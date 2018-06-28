@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "description": "## TODO: * Integrate VexFlow notation renderer",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Centribo/web-midi.git"
@@ -16,6 +15,7 @@
   },
   "homepage": "https://github.com/Centribo/web-midi#readme",
   "dependencies": {
-    "abcjs": "^5.1.2"
+    "abcjs": "^5.1.2",
+    "materialize-css": "^1.0.0-rc.2"
   }
 }

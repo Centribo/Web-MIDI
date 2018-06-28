@@ -51,6 +51,8 @@ function randomNote(){
 	immediateRenderNote(i);
 	MIDI.noteOn(0, i, 127, 0);
 	MIDI.noteOff(0, i, 127, 1);
+	highlightNoteOnNoteInputter(i);
+	setTimeout(function(){ unhighlightNoteOnNoteInputter(i); }, 3000);
 }
 
 function pianoKeyPressed(note){
@@ -124,4 +126,8 @@ function unhighlightNoteOnNoteInputter(note, className = "note-inputter-highligh
 	var noteNames = [MIDINotes.MIDIToNoteName(note, 2).noteName, MIDINotes.MIDIToNoteName(note, 3).noteName];
 	noteInputter.removeClassFromNote(noteNames[0], className);
 	noteInputter.removeClassFromNote(noteNames[1], className);
+}
+
+function destroyPiano(){
+	piano.destroy();
 }

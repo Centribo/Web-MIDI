@@ -60,6 +60,9 @@ class NoteInputter {
 		button.dataset.note = note;
 		button.dataset.accidental = accidentalSymbol;
 		button.dataset.noteNumber = noteNumber;
+
+		button.classList.add("waves-effect", "waves-light", "btn"); //Materialize CSS
+
 		return button;
 	}
 }

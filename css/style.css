@@ -6,14 +6,7 @@ body {
 	height: 600px;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	grid-template-rows: repeat(3, 1fr);
-}
-
-#note-inputter {
-	height: 300px;
-	display: grid;
-	grid-template-columns: repeat(7, 1fr);
-	grid-template-rows: repeat(3, 1fr);
+	grid-template-rows: repeat(2, 1fr);
 }
 
 #notation-wrapper {
@@ -46,11 +39,41 @@ body {
 	justify-self: center;
 }
 
+#buttons {
+	text-align: center;
+	padding-bottom: 30px;
+}
+#buttons > a {
+	width: 250px;
+	background-color: hsl(0, 0%, 65%);
+}
+
+#note-inputter {
+	height: 250px;
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+}
+
 .note-inputter-button {
+	height: auto;
 	border: none;
 	border-radius: 4px;
+	color: black;
 	margin: 5px;
+	text-transform: none;
 }
+
+.note-inputter-button:active {
+	background-color: red;
+}
+.note-inputter-button:hover {
+	background-color: pink;
+}
+.note-inputter-button:focus {
+	background-color: red;
+}
+
 .note-inputter-sharp {
 	background-color: hsl(0, 0%, 85%);
 }
