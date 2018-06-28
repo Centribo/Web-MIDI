@@ -1,17 +1,19 @@
 var piano;
 var noteInputter;
 var isMIDIJsLoaded = false;
+var instrumentName = "acoustic_grand_piano";
 
 window.onload = function () {
 	load();
 	clearNotes();
 	MIDI.loadPlugin({
 		soundfontUrl: "./soundfont/",
-		instrument: "acoustic_grand_piano",
+		instrument: instrumentName,
 		onprogress: function(state, progress) {
 			// console.log(state, progress);
 		},
 		onsuccess: function() {
+			MIDI.programChange(0, MIDI.GM.byName[instrumentName].number);
 			isMIDIJsLoaded = true;
 		}
 	});
