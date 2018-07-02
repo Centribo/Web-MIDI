@@ -96,12 +96,15 @@ class PianoKeyboard {
 			"border: " + borderWidth + units + " solid " + this.blackKeyBorderColor + ";" +
 			"background-color: " + this.blackKeyColor + ";";
 		}
+
+		this.isActive = true; //This piano-keyboard is active now
 	} //End constructor
 
 	destroy(){
 		while (this.pianoHTML.firstChild) {
 			this.pianoHTML.removeChild(this.pianoHTML.firstChild);
 		}
+		this.isActive = false; //This piano-keyboard is no longer active
 	}
 
 	//"pressed", "released", "highlighted", "custom"

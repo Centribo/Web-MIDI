@@ -52,7 +52,7 @@ function randomNote(){
 	var i = getRandomInt(60, 84);
 	immediateRenderNote(i);
 	MIDI.noteOn(0, i, 127, 0);
-	MIDI.noteOff(0, i, 127, 1);
+	MIDI.noteOff(0, i, 1);
 	highlightNoteOnNoteInputter(i);
 	setTimeout(function(){ unhighlightNoteOnNoteInputter(i); }, 3000);
 }
@@ -114,7 +114,7 @@ function playMIDINote(note, velocity){
 
 function stopMIDINote(note, velocity){
 	if(isMIDIJsLoaded){
-		MIDI.noteOff(0, note, velocity, 0);
+		MIDI.noteOff(0, note, 0);
 	}
 }
 
@@ -130,6 +130,20 @@ function unhighlightNoteOnNoteInputter(note, className = "note-inputter-highligh
 	noteInputter.removeClassFromNote(noteNames[1], className);
 }
 
-function destroyPiano(){
-	piano.destroy();
+function togglePiano(){
+	if(piano.isActive){
+		piano.destroy();
+	} else {
+		piano = new PianoKeyboard();
+		piano.onKeyPress = pianoKeyPressed;
+		piano.onKeyRelease = pianoKeyReleased;	
+	}
+}
+
+function testButton(){
+	var notes = MusicTheory.getChord(48, "maj");
+	for(var i = 0; i < notes.length; i++){
+		MIDI.noteOn(0, notes[i], 127, 0);
+		MIDI.noteOff(0, notes[i], 3);
+	}
 }

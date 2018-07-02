@@ -4,4 +4,4 @@
 * Integrate ABCJS notation renderer
 * Start bringing everything together to create games
 * Settings for instruments, volume, devices, etc.
-* Finish note-inputter
+* Complete music-theory.js

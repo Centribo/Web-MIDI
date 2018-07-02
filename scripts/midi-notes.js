@@ -1,10 +1,3 @@
-//Cover all the ways someone could name a note in the chromatic scale
-//                          0    1        2    3        4    5    6        7    8        9    10       11
-var noteNames =           ["C", "C#/Db", "D", "Eb/D#", "E", "F", "F#/Gb", "G", "Ab/G#", "A", "Bb/A#", "B"];
-var flippedNoteNames =    ["C", "Db/C#", "D", "D#/Eb", "E", "F", "Gb/F#", "G", "G#/Ab", "A", "A#/Bb", "B"];
-var onlyFlatsNoteNames =  ["C", "Db",    "D", "Eb",    "E", "F", "Gb",    "G", "Ab",    "A", "Bb",    "B"];
-var onlySharpsNoteNames = ["C", "C#",    "D", "D#",    "E", "F", "F#",    "G", "G#",    "A", "A#",    "B"];
-
 class MIDINotes {
 	//Helper functions for MIDI:
 	
@@ -12,16 +5,16 @@ class MIDINotes {
 	//[Note number relative to C, Octave, name of note]
 	static MIDIToNoteName(MIDINumber, nameType = 0){
 		var noteNumber = MIDINumber%12; //Note number in semitones/halfsteps relative to C
-		var noteName = noteNames[noteNumber]; //Mapped note name
+		var noteName = this.noteNames[noteNumber]; //Mapped note name
 		switch(nameType){
 			case 1:
-			noteName = flippedNoteNames[noteNumber];
+			noteName = this.flippedNoteNames[noteNumber];
 			break;
 			case 2:
-			noteName = onlyFlatsNoteNames[noteNumber];
+			noteName = this.onlyFlatsNoteNames[noteNumber];
 			break;
 			case 3:
-			noteName = onlySharpsNoteNames[noteNumber];
+			noteName = this.onlySharpsNoteNames[noteNumber];
 			break;
 		}
 		var octave = Math.floor(MIDINumber/12)-1;
@@ -57,10 +50,10 @@ class MIDINotes {
 		}
 
 		var lookupResults = [
-			noteNames.indexOf(noteName),
-			flippedNoteNames.indexOf(noteName),
-			onlyFlatsNoteNames.indexOf(noteName),
-			onlySharpsNoteNames.indexOf(noteName)
+			this.noteNames.indexOf(noteName),
+			this.flippedNoteNames.indexOf(noteName),
+			this.onlyFlatsNoteNames.indexOf(noteName),
+			this.onlySharpsNoteNames.indexOf(noteName)
 		];
 		
 		for(var i = 0; i < lookupResults.length; i++){
@@ -173,3 +166,10 @@ class MIDINotes {
 		return output;
 	}
 }
+
+//Cover all the ways someone could name a note in the chromatic scale
+//                          0    1        2    3        4    5    6        7    8        9    10       11
+MIDINotes.noteNames =           ["C", "C#/Db", "D", "Eb/D#", "E", "F", "F#/Gb", "G", "Ab/G#", "A", "Bb/A#", "B"];
+MIDINotes.flippedNoteNames =    ["C", "Db/C#", "D", "D#/Eb", "E", "F", "Gb/F#", "G", "G#/Ab", "A", "A#/Bb", "B"];
+MIDINotes.onlyFlatsNoteNames =  ["C", "Db",    "D", "Eb",    "E", "F", "Gb",    "G", "Ab",    "A", "Bb",    "B"];
+MIDINotes.onlySharpsNoteNames = ["C", "C#",    "D", "D#",    "E", "F", "F#",    "G", "G#",    "A", "A#",    "B"];
