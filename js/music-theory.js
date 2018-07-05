@@ -10,7 +10,7 @@ class MusicTheory {
 	}
 
 	static getChord(root, chordName){
-		var notes = this.chords[chordName];
+		var notes = [].concat(this.chords[chordName].values); //Make sure to copy the array (or else we're getting a reference)
 		if(notes == null) {
 			return null;
 		}
@@ -62,6 +62,13 @@ MusicTheory.intervals = {
 //Dictionary to look up chords by name
 MusicTheory.chords = {
 	//Triads:
-	"Major" : ["P1", "M3", "P5"],
-	"maj" : ["P1", "M3", "P5"]
+	"Major"      : { values: ["P1", "M3", "P5"] },
+	"Minor"      : { values: ["P1", "m3", "P5"] },
+	"Diminished" : { values: ["P1", "m3", "d5"] },
+	"Augmented"  : { values: ["P1", "M3", "A5"] },
+
+	//7ths:
+	"Major seventh" : { values: ["P1", "M3", "P5", "M7"] },
 }
+//Setup aliases:
+MusicTheory.chords["maj"] = MusicTheory.chords["Major"];
