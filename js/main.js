@@ -140,8 +140,8 @@ function togglePiano(){
 	}
 }
 
-function playChord(quality){
-	var notes = MusicTheory.getChord(48, quality);
+function playChord(quality, inversion = 0){
+	var notes = MusicTheory.getChord(48, quality, inversion);
 	console.log(notes);
 	for(var i = 0; i < notes.length; i++){
 		MIDI.noteOn(0, notes[i], 127, 0);
