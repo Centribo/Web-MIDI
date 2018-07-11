@@ -37,7 +37,7 @@
 	<script src="./js/note-inputter.js" type="text/javascript"></script>
 	<script src="./js/abc-renderer.js" type="text/javascript"></script>
 	<script src="./js/main.js" type="text/javascript" defer></script>
-	<script src="./js/interface.js" type="text/javascript" defer></script>
+	<script src="./js/settings.js" type="text/javascript" defer></script>
 </head>
 <body>
 	<div id="main-wrapper">
@@ -93,9 +93,10 @@
 					<option value="3">Option 3</option>
 				</select>
 			</div>
-			<a class="waves-effect waves-light btn">Refresh Devices</a>
-
-			<p>A bunch of text</p>
+			<a class="waves-effect waves-light btn" onclick="Settings.updateInputDevicesList()">Update Devices</a>
+			
+			<h5>Device Range:</h5>
+			<p>Press the lowest and highest notes on your device to calibrate.</p>
 		</div>
 		<div class="modal-footer">
 			<a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>

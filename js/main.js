@@ -4,6 +4,7 @@ var isMIDIJsLoaded = false;
 var instrumentName = "acoustic_grand_piano";
 
 window.onload = function () {
+	M.AutoInit();
 	load();
 	clearNotes();
 	MIDI.loadPlugin({
@@ -33,6 +34,9 @@ function load(){
 			controllers["input-0"].onKeyRelease = MIDIKeyReleased;
 		}
 	});
+
+	Settings.init();
+	Settings.updateInputDevicesList();
 }
 
 function noteClicked(data){
