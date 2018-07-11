@@ -1,81 +1,114 @@
 <html>
-	<head>
-		<meta charset="utf-8"/>
-		<title>MIDI</title>
+<head>
+	<meta charset="utf-8"/>
+	<title>MIDI</title>
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link type="text/css" rel="stylesheet" href="./node_modules/abcjs/abcjs-midi.css">
+	<link type="text/css" rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.min.css"  media="screen,projection"/>
+	<link type="text/css" rel="stylesheet" href="./css/style.css">
+	
+	<!-- abcjs -->
+	<script src="./node_modules/abcjs/bin/abcjs_midi_5.1.2-min.js" type="text/javascript"></script>
+	<!-- MIDI.js -->
+	<!-- Import soundfonts, so we can run this locally without a webserver -->
+	<script src="./soundfont/acoustic_grand_piano-ogg.js"></script>
+	<script src="./soundfont/acoustic_grand_piano-mp3.js"></script>
+	
+	<!-- Imports and includes -->
+	<script src="./js/midi_js/inc/shim/Base64.js" type="text/javascript"></script>
+	<script src="./js/midi_js/inc/shim/Base64binary.js" type="text/javascript"></script>
+	<script src="./js/midi_js/inc/shim/WebAudioAPI.js" type="text/javascript"></script>
+	<script src="./js/midi_js/js/midi/audioDetect.js" type="text/javascript"></script>
+	<script src="./js/midi_js/js/midi/gm.js" type="text/javascript"></script>
+	<script src="./js/midi_js/js/midi/loader.js" type="text/javascript"></script>
+	<script src="./js/midi_js/js/midi/plugin.audiotag.js" type="text/javascript"></script>
+	<script src="./js/midi_js/js/midi/plugin.webaudio.js" type="text/javascript"></script>
+	<script src="./js/midi_js/js/midi/plugin.webmidi.js" type="text/javascript"></script>
+	<script src="./js/midi_js/js/util/dom_request_xhr.js" type="text/javascript"></script>
+	<script src="./js/midi_js/js/util/dom_request_script.js" type="text/javascript"></script>
+	
+	<!-- Custom scripts -->
+	<script src="./js/midi-notes.js" type="text/javascript"></script>
+	<script src="./js/music-theory.js" type="text/javascript"></script>
+	<script src="./js/midi-controller.js" type="text/javascript"></script>
+	<script src="./js/piano-keyboard.js" type="text/javascript"></script>
+	<script src="./js/note-inputter.js" type="text/javascript"></script>
+	<script src="./js/abc-renderer.js" type="text/javascript"></script>
+	<script src="./js/main.js" type="text/javascript" defer></script>
+	<script src="./js/interface.js" type="text/javascript" defer></script>
+</head>
+<body>
+	<div id="main-wrapper">
+		<div id="notation-wrapper">
+			<div id="notation"></div>
+		</div>
 		
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<link type="text/css" rel="stylesheet" href="./node_modules/abcjs/abcjs-midi.css">
-		<link type="text/css" rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.min.css"  media="screen,projection"/>
-		<link type="text/css" rel="stylesheet" href="./css/style.css">
-
-		<!-- abcjs -->
-		<script src="./node_modules/abcjs/bin/abcjs_midi_5.1.2-min.js" type="text/javascript"></script>
-		<!-- MIDI.js -->
-		<!-- Import soundfonts, so we can run this locally without a webserver -->
-		<script src="./soundfont/acoustic_grand_piano-ogg.js"></script>
-		<script src="./soundfont/acoustic_grand_piano-mp3.js"></script>
-
-		<!-- Imports and includes -->
-		<script src="./js/midi_js/inc/shim/Base64.js" type="text/javascript"></script>
-		<script src="./js/midi_js/inc/shim/Base64binary.js" type="text/javascript"></script>
-		<script src="./js/midi_js/inc/shim/WebAudioAPI.js" type="text/javascript"></script>
-		<script src="./js/midi_js/js/midi/audioDetect.js" type="text/javascript"></script>
-		<script src="./js/midi_js/js/midi/gm.js" type="text/javascript"></script>
-		<script src="./js/midi_js/js/midi/loader.js" type="text/javascript"></script>
-		<script src="./js/midi_js/js/midi/plugin.audiotag.js" type="text/javascript"></script>
-		<script src="./js/midi_js/js/midi/plugin.webaudio.js" type="text/javascript"></script>
-		<script src="./js/midi_js/js/midi/plugin.webmidi.js" type="text/javascript"></script>
-		<script src="./js/midi_js/js/util/dom_request_xhr.js" type="text/javascript"></script>
-		<script src="./js/midi_js/js/util/dom_request_script.js" type="text/javascript"></script>
-
-		<!-- Custom scripts -->
-		<script src="./js/midi-notes.js" type="text/javascript"></script>
-		<script src="./js/music-theory.js" type="text/javascript"></script>
-		<script src="./js/midi-controller.js" type="text/javascript"></script>
-		<script src="./js/piano-keyboard.js" type="text/javascript"></script>
-		<script src="./js/note-inputter.js" type="text/javascript"></script>
-		<script src="./js/abc-renderer.js" type="text/javascript"></script>
-		<script src="./js/main.js" type="text/javascript" defer></script>
-	</head>
-	<body>
-		<div id="main-wrapper">
-			<div id="notation-wrapper">
-				<div id="notation"></div>
-			</div>
+		<div id="pianoKeyboard"></div>
+	</div>
+	
+	<div id="buttons">
+		<a class="waves-effect waves-light btn" onclick="renderChromaticScale()">Render Chromatic Scale</a>
+		<a class="waves-effect waves-light btn" onclick="randomNote()">Play & render random note</a>
+		<a class="waves-effect waves-light btn" onclick="clearNotes()">Clear notes</a>
+		<a class="waves-effect waves-light btn" onclick="togglePiano()">Toggle piano</a>
+	</div>
+	
+	<div id="note-inputter">
+	</div>
+	<br>
+	<a class="waves-effect waves-light btn" onclick='playChord("Major")'>Major Triad</a>
+	<a class="waves-effect waves-light btn" onclick='playChord("Minor")'>Minor Triad</a>
+	<a class="waves-effect waves-light btn" onclick='playChord("Diminished")'>Diminished Triad</a>
+	<a class="waves-effect waves-light btn" onclick='playChord("Augmented")'>Augmented Triad</a>
+	<br>
+	<a class="waves-effect waves-light btn" onclick='playChord("Major seventh")'>Major 7th</a>
+	<a class="waves-effect waves-light btn" onclick='playChord("Minor seventh")'>Minor 7th</a>
+	<a class="waves-effect waves-light btn" onclick='playChord("minmaj")'>majmin</a>
+	<a class="waves-effect waves-light btn" onclick='playChord("Dominant seventh")'>dom7</a>
+	<a class="waves-effect waves-light btn" onclick='playChord("Half-diminished")'>ø7</a>
+	<a class="waves-effect waves-light btn" onclick='playChord("Diminished seventh")'>dim7</a>
+	<a class="waves-effect waves-light btn" onclick='playChord("Augmented major")'>aug7</a>
+	<br>
+	
+	<!-- Settings Modal Button -->
+	<div class="fixed-action-btn">
+		<a class="btn-floating btn-large grey waves-effect waves-light modal-trigger" href="#settings-modal">
+			<i class="large material-icons">settings</i>
+		</a>
+	</div>
+	
+	<!-- Settings Modal -->
+	<div id="settings-modal" class="modal">
+		<div class="modal-content">
+			<h4>Settings</h4>
 			
-			<div id="pianoKeyboard"></div>
-		</div>
-		
-		<div id="buttons">
-			<a class="waves-effect waves-light btn" onclick="renderChromaticScale()">Render Chromatic Scale</a>
-			<a class="waves-effect waves-light btn" onclick="randomNote()">Play & render random note</a>
-			<a class="waves-effect waves-light btn" onclick="clearNotes()">Clear notes</a>
-			<a class="waves-effect waves-light btn" onclick="togglePiano()">Toggle piano</a>
-		</div>
+			<h5>Input Devices:</h5>
+			<div class="input-field col">
+				<select id="input-devices-selector">
+					<option value="" disabled selected>Choose your MIDI Device</option>
+					<option value="1">Option 1</option>
+					<option value="2">Option 2</option>
+					<option value="3">Option 3</option>
+				</select>
+			</div>
+			<a class="waves-effect waves-light btn">Refresh Devices</a>
 
-		<div id="note-inputter">
+			<p>A bunch of text</p>
 		</div>
-		<br>
-		<a class="waves-effect waves-light btn" onclick='playChord("Major")'>Major Triad</a>
-		<a class="waves-effect waves-light btn" onclick='playChord("Minor")'>Minor Triad</a>
-		<a class="waves-effect waves-light btn" onclick='playChord("Diminished")'>Diminished Triad</a>
-		<a class="waves-effect waves-light btn" onclick='playChord("Augmented")'>Augmented Triad</a>
-		<br>
-		<a class="waves-effect waves-light btn" onclick='playChord("Major seventh")'>Major 7th</a>
-		<a class="waves-effect waves-light btn" onclick='playChord("Minor seventh")'>Minor 7th</a>
-		<a class="waves-effect waves-light btn" onclick='playChord("minmaj")'>majmin</a>
-		<a class="waves-effect waves-light btn" onclick='playChord("Dominant seventh")'>dom7</a>
-		<a class="waves-effect waves-light btn" onclick='playChord("Half-diminished")'>ø7</a>
-		<a class="waves-effect waves-light btn" onclick='playChord("Diminished seventh")'>dim7</a>
-		<a class="waves-effect waves-light btn" onclick='playChord("Augmented major")'>aug7</a>
-		<br>
-		Created by <a href="https://www.adamleung.me">Adam Leung</a><br>
-		Source code available on <a href="https://github.com/Centribo/web-midi">GitHub</a><br>
-		<a href="https://github.com/Dogfalo/materialize">MaterializeCSS</a> licensed under <a href="https://github.com/Dogfalo/materialize/blob/v1-dev/LICENSE">MIT</a><br>
-		<a href="https://github.com/mudcube/MIDI.js">MIDI.js</a> licensed under <a href="https://github.com/mudcube/MIDI.js/blob/master/LICENSE.txt">MIT</a><br>
-		<a href="https://github.com/paulrosen/abcjs">abcjs</a> licensed under <a href="https://github.com/paulrosen/abcjs/blob/master/LICENSE.md">MIT</a><br>
-		<a href="https://github.com/gleitz/midi-js-soundfonts">midi-js-soundfonts</a> licensed under <a href="https://github.com/gleitz/midi-js-soundfonts/blob/gh-pages/LICENSE.txt">MIT</a><br>
-		<script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.min.js"></script>
-	</body>
+		<div class="modal-footer">
+			<a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+		</div>
+	</div>
+	
+	
+	Created by <a href="https://www.adamleung.me">Adam Leung</a><br>
+	Source code available on <a href="https://github.com/Centribo/web-midi">GitHub</a><br>
+	<a href="https://github.com/Dogfalo/materialize">MaterializeCSS</a> licensed under <a href="https://github.com/Dogfalo/materialize/blob/v1-dev/LICENSE">MIT</a><br>
+	<a href="https://github.com/mudcube/MIDI.js">MIDI.js</a> licensed under <a href="https://github.com/mudcube/MIDI.js/blob/master/LICENSE.txt">MIT</a><br>
+	<a href="https://github.com/paulrosen/abcjs">abcjs</a> licensed under <a href="https://github.com/paulrosen/abcjs/blob/master/LICENSE.md">MIT</a><br>
+	<a href="https://github.com/gleitz/midi-js-soundfonts">midi-js-soundfonts</a> licensed under <a href="https://github.com/gleitz/midi-js-soundfonts/blob/gh-pages/LICENSE.txt">MIT</a><br>
+	<script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.min.js"></script>
+</body>
 </html>
